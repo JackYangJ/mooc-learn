@@ -1,25 +1,31 @@
 <template>
-  <el-form
-    ref="ruleFormRef"
-    :model="ruleForm"
-    :rules="rules"
-    label-position="right"
-    label-width="100px"
-    style="max-width: 460px"
-  >
-    <el-form-item label="用户名" prop="name">
-      <el-input v-model="ruleForm.name" />
-    </el-form-item>
-    <el-form-item label="密码" prop="password">
-      <el-input v-model="ruleForm.password" />
-    </el-form-item>
-    <el-form-item label="验证码" prop="verificationCode">
-      <el-input v-model="ruleForm.verificationCode" />
-      <div v-html="imgSvg" @click="getCaptcha"></div>
-    </el-form-item>
-  </el-form>
-  <el-button type="primary" @click="submitForm(ruleFormRef)">点击登陆</el-button>
-  <el-button>忘记密码</el-button>
+  <div class="wrap">
+    <div class="middle">
+      <div class="title">Welcome back....</div>
+      <el-form
+        ref="ruleFormRef"
+        :model="ruleForm"
+        :rules="rules"
+        label-position="right"
+        label-width="100px"
+        style="max-width: 460px"
+      >
+        <el-form-item label="" prop="name">
+          <el-input v-model="ruleForm.name" placeholder="username" />
+        </el-form-item>
+        <el-form-item label="" prop="password">
+          <el-input v-model="ruleForm.password" placeholder="password" type="password" />
+        </el-form-item>
+        <el-form-item label="" prop="verificationCode">
+          <el-input v-model="ruleForm.verificationCode" />
+        </el-form-item>
+        <div v-html="imgSvg" @click="getCaptcha"></div>
+      </el-form>
+      <a class="forget">forgot password</a>
+      <div class="button login">Login</div>
+      <div class="button sign-up">Sign up for an account</div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -84,3 +90,54 @@ onMounted(() => {
 })
 
 </script>
+<style scoped lang="scss">
+  .wrap{
+    background: #2b2a2a;
+    height: 100%;
+    width: 100%;
+    .middle{
+      margin: 0 auto;
+      width: 300px;
+      padding-top: 100px;
+      .title{
+        font-size: 30px;
+        color: #ffffff;
+        margin-bottom: 25px;
+      }
+      :deep .el-form {
+        .el-form-item__content{
+          margin-left: 0px !important;
+          margin-bottom: 10px;
+          .el-input__wrapper{
+            border-radius: 32px;
+            background: #3e3e3e;
+          }
+        }
+      }
+      .forget{
+        font-size: 16px;
+        color: #b4b4b4;
+        text-decoration: underline;
+        margin-top: 5px;
+        margin-bottom: 5px;
+      }
+      .button{
+          border-radius: 32px;
+          line-height: 32px;
+          text-align: center;
+          font-size: 15px;
+          width: 100%;
+          height: 32px;
+          margin-top: 15px;
+        .login{
+          background: #9946c7;
+          color: #ffffff;
+        }
+        .sign-up{
+          background: #2b2a2a;
+          border: 1px solid #e4e4e4;
+        }
+      }
+    }
+  }
+</style>
