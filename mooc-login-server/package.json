@@ -25,6 +25,7 @@
     "koa-json": "^2.0.2",
     "koa-router": "^12.0.1",
     "koa-static": "^5.0.0",
+    "nodemailer": "^6.9.7",
     "svg-captcha": "^1.4.0"
   },
   "devDependencies": {

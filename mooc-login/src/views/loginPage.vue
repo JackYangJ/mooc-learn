@@ -5,7 +5,7 @@
       <el-form
         ref="ruleFormRef"
         :model="ruleForm"
-        :rules="rules"
+        :rules="loginType === 'login' ? rules : forgetRules"
         label-position="right"
         label-width="100px"
         style="max-width: 460px"
@@ -13,17 +13,22 @@
         <el-form-item label="" prop="name">
           <el-input v-model="ruleForm.name" placeholder="username" />
         </el-form-item>
-        <el-form-item label="" prop="password">
+        <el-form-item v-if="loginType === 'login'" label="" prop="password">
           <el-input v-model="ruleForm.password" placeholder="password" type="password" />
         </el-form-item>
         <el-form-item label="" prop="verificationCode">
-          <el-input v-model="ruleForm.verificationCode" />
+          <el-input v-model="ruleForm.verificationCode" placeholder="verification code" />
         </el-form-item>
         <div v-html="imgSvg" @click="getCaptcha"></div>
       </el-form>
-      <a class="forget">forgot password</a>
-      <div class="button login">Login</div>
-      <div class="button sign-up">Sign up for an account</div>
+      <a class="forget" @click="forgetPass">forgot password</a>
+      <template v-if="loginType === 'login'">
+        <div class="button login">Login</div>
+        <div class="button sign-up">Sign up for an account</div>
+      </template>
+      <template v-else>
+        <div class="button login">Send Email</div>
+      </template>
     </div>
   </div>
 </template>
@@ -60,6 +65,17 @@ const rules = reactive<FormRules<RuleForm>>({
   ],
 })
 
+const forgetRules = reactive<FormRules<RuleForm>>({
+  name: [
+    { required: true, message: 'Please input Activity name', trigger: 'blur' },
+    { min: 3, max: 5, message: 'Length should be 3 to 5', trigger: 'blur' },
+  ],
+  verificationCode: [
+    { required: true, message: 'Please input Activity verificationCode', trigger: 'blur' },
+    { min: 3, max: 5, message: 'Length should be 3 to 5', trigger: 'blur' },
+  ],
+})
+
 // submit data validate
 const submitForm = async (formEl: FormInstance | undefined) => {
   console.log('submitForm')
@@ -80,6 +96,11 @@ const getCaptcha = async function () {
       imgSvg.value = res.data.msg;
     }
   })
+}
+
+const loginType = ref<String>('login')
+const forgetPass = function() {
+  loginType.value = 'forgetPass'
 }
 
 // const labelPosition = ref<FormProps['labelPosition']>('right')
@@ -120,6 +141,7 @@ onMounted(() => {
         text-decoration: underline;
         margin-top: 5px;
         margin-bottom: 5px;
+        cursor: pointer;
       }
       .button{
           border-radius: 32px;
@@ -129,11 +151,11 @@ onMounted(() => {
           width: 100%;
           height: 32px;
           margin-top: 15px;
-        .login{
+        &.login{
           background: #9946c7;
           color: #ffffff;
         }
-        .sign-up{
+        &.sign-up{
           background: #2b2a2a;
           border: 1px solid #e4e4e4;
         }
